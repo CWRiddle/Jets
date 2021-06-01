@@ -1,0 +1,7 @@
+Northorp Grumman B-2 Spirit, 628, 6897.2, 2000000000.00
+Boeing 737, 583, 3452.338, 90000000.00
+Boeing V-22 Osprey, 351, 1011, 75000000.00
+Caspian Sea Monster, 311, 932.1, 0
+Cessna 172 Skyhawk, 188, 736.3, 400000.00
+McDonnell Douglas FA-18 Hornet, 1190, 500, 40000000.00
+Flux Liner, 1000000, 100000, 0
