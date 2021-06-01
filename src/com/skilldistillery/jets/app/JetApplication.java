@@ -37,7 +37,7 @@ public class JetApplication {
 		Airfield airfield = new Airfield(jets);
 		
 		//Presents Menu
-		menu(jets);
+		menu(airfield);
 	}
 	
 	private void readFile(File file, List<Jet> jets) {
@@ -47,7 +47,6 @@ public class JetApplication {
 			while((line = br.readLine()) != null) {
 				jets.add( parseFileContents(line) );
 			}
-			
 		}
 		catch(FileNotFoundException e) {
 			e.printStackTrace();
@@ -55,8 +54,6 @@ public class JetApplication {
 		catch(IOException e) {
 			e.printStackTrace();
 		}
-		
-
 	}
 	
 	//Parses the contents of lines read from files into the correct Jet object
@@ -105,7 +102,7 @@ public class JetApplication {
 	}
 	
 	//Displays menu
-	private void menu(List<Jet> jets) {
+	private void menu(Airfield airfield) {
 		int input;
 		boolean looping = true;
 		Scanner kb = new Scanner(System.in);
@@ -131,28 +128,28 @@ public class JetApplication {
 			//Calls relevant method for menu selection
 			switch(input) {
 				case 1:
-					listFleet(jets);
+					airfield.listFleet();
 					break;
 				case 2:
-					flyAllJets(jets);
+					airfield.flyAllJets();
 					break;
 				case 3:
-					viewFastestJet(jets);
+					airfield.viewFastestJet();
 					break;
 				case 4:
-					viewLongestRange(jets);
+					airfield.viewLongestRange();
 					break;
 				case 5:
-					loadAllCargoJets(jets);
+					airfield.loadAllCargoJets();
 					break;
 				case 6:
-					executeExperimentalFunctions(jets);
+					airfield.executeExperimentalFunctions();
 					break;
 				case 7:
-					addJetToFleet(jets, kb);
+					airfield.addJetToFleet(kb);
 					break;
 				case 8:
-					removeJetFromFleet(jets, kb);
+					airfield.removeJetFromFleet(kb);
 					break;
 				case 9:
 					System.out.println("Program Ended.");
@@ -162,98 +159,4 @@ public class JetApplication {
 		}
 		kb.close();
 	}
-	
-	//Prints all jets stored in fleet
-	public void listFleet(List<Jet> jets) {
-		for(int i=0; i<jets.size(); i++) {
-			System.out.println(jets.get(i).toString());
-		}
-	}
-	
-	//Prints all jet info as well as travel time
-	public void flyAllJets(List<Jet> jets) {
-		for(int i=0; i<jets.size(); i++) {
-			jets.get(i).fly();
-		}
-	}
-	
-	//Prints out fastest jet
-	public void viewFastestJet(List<Jet> jets) {
-		Jet highestJet = jets.get(0);
-		for(Jet jet : jets) {
-			if(jet.getSpeed() > highestJet.getSpeed()) {
-				highestJet = jet;
-			}
-		}
-		System.out.println(highestJet.toString());
-	}
-	
-	//Prints out jet with longest range
-	public void viewLongestRange(List<Jet> jets) {
-		Jet longestJet = jets.get(0);
-		for(Jet jet : jets) {
-			if(jet.getRange() > longestJet.getRange())
-			{
-				longestJet = jet;
-			}
-		}
-		System.out.println("\nJet With Longest Range:");
-		System.out.println("------------------------");
-		System.out.println(longestJet.toString());
-	}
-	public void loadAllCargoJets(List<Jet> jets) {
-		for(Jet jet : jets) {
-			if(jet instanceof CargoCarrier) {
-				((CargoCarrier)jet).loadCargo();
-				((CargoCarrier) jet).loadPassengers();
-			}
-		}
-		
-	}
-	public void executeExperimentalFunctions(List<Jet> jets) {
-		
-		for(Jet jet : jets) {
-			if(jet instanceof ExperimentalFunction) {
-				((ExperimentalFunction) jet).executeExperimentalFunction();
-			}
-		}
-		
-	}
-	public void addJetToFleet(List<Jet> jets, Scanner kb) {
-
-		System.out.println("Enter name of jet: ");
-		kb.nextLine();
-		String name = kb.nextLine();
-		System.out.println("Enter speed (in MPH): ");
-		int speed = kb.nextInt();
-		System.out.println("Enter range: ");
-		double range = kb.nextDouble();
-		System.out.println("Enter price: ");
-		double price = kb.nextDouble();
-		System.out.println("What type of aircraft is this: ");
-		System.out.println("1. Military Aircraft");
-		System.out.println("2. Civilian Aircraft");
-		System.out.println("3. Experimental Aircraft");
-		int aircraftType = kb.nextInt();
-		
-		if(aircraftType == 1)
-			jets.add( new MilitaryAircraft(name, speed, range, price));
-		if(aircraftType == 2)
-			jets.add( new CivilianAircraft(name, speed, range, price));
-		if(aircraftType == 3)
-			jets.add( new ExperimentalAircraft(name, speed, range, price));
-
-	}
-	public void removeJetFromFleet(List<Jet> jets, Scanner kb) {
-		kb.nextLine();
-		//Either type in name or jetID of jet to be removed
-		System.out.println("Enter name of jet or the jet ID of the jet to be removed: ");
-		String input = kb.nextLine();
-		for(int i=0; i<jets.size(); i++) {
-			if(input.equals(jets.get(i).getModel()) || input.equals(Integer.toString(jets.get(i).getId()))) {
-				jets.remove(i);
-			}
-		}
-	}
-
 }

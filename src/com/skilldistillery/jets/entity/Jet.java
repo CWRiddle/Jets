@@ -29,14 +29,17 @@ public abstract class Jet {
 	}
 	
 	public void fly() {
+		//Magic math
 		double flyTime = this.range / this.speed;
 		double flyTimeMinutes = flyTime * 60;
 		int flyTimeHours = (int)(flyTimeMinutes / 60);
 		flyTimeMinutes %= 60; //60 * flyTimeInHours;
 		int flyTimeSeconds = (int) (60 *(flyTimeMinutes % 60));
 		
-		System.out.println(toString() + "\nFly time: " + flyTimeHours + " hr : " + (int)flyTimeMinutes + " min : " + flyTimeSeconds + " s");
+		System.out.println(toString() + "\n\tFly time: " + flyTimeHours + " hr : " + (int)flyTimeMinutes + " min");
 	}
+	
+	
 	
 	@Override
 	public String toString()
