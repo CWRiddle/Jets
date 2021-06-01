@@ -24,14 +24,20 @@ public class JetApplication {
 	}
 	
 	private void runApp() {
+		//Designate file to read from
 		File file = new File("Aircraft.txt");
+		
+		//Creates list of jets
 		List<Jet> jets = new ArrayList<>();
+		
+		//Reads file and sorts contents into Jet objects
 		readFile(file, jets);
+		
+		//Stores jets into airfield
 		Airfield airfield = new Airfield(jets);
-		int input;
 		
+		//Presents Menu
 		menu(jets);
-		
 	}
 	
 	private void readFile(File file, List<Jet> jets) {
@@ -53,69 +59,76 @@ public class JetApplication {
 
 	}
 	
+	//Parses the contents of lines read from files into the correct Jet object
 	private Jet parseFileContents(String line) {
 		
+		//Splits line up into an array of strings, splitting at commas
         String[] jetData = line.split(", ");
-        //String identifier = jetData[0];
+
+        //Sorts String elements into appropriate
         String name = jetData[0];
         int speed = Integer.parseInt(jetData[1]);
         double range = Double.parseDouble(jetData[2]);
         double price = Double.parseDouble(jetData[3]);
         
+        //Compares names read from file to the names of the objects they belong to
         if(name.equals("Northorp Grumman B-2 Spirit")) {
         	Jet jet = new NorthropGrummanB2Spirit(name, speed, range, price);
         	return jet;
         }
-        if(name.equals("Boeing 737")) {
+        else if(name.equals("Boeing 737")) {
         	Jet jet = new Boeing737(name, speed, range, price);
         	return jet;
         }
-        if(name.equals("Boeing V-22 Osprey")) {
+        else if(name.equals("Boeing V-22 Osprey")) {
         	Jet jet = new BoeingV22Osprey(name, speed, range, price);
         	return jet;
         }
-        if(name.equals("Caspian Sea Monster")) {
+        else if(name.equals("Caspian Sea Monster")) {
         	Jet jet = new CaspianSeaMonster(name, speed, range, price);
         	return jet;
         }
-        if(name.equals("Cessna 172 Skyhawk")) {
+        else if(name.equals("Cessna 172 Skyhawk")) {
         	Jet jet = new Cessna172Skyhawk(name, speed, range, price);
         	return jet;
         }
-        if(name.equals("McDonnell Douglas FA-18 Hornet")) {
+        else if(name.equals("McDonnell Douglas FA-18 Hornet")) {
         	Jet jet = new McDonnelDouglasFA18Hornet(name, speed, range, price);
         	return jet;
         }
-        if(name.equals("Flux Liner")) {
+        else if(name.equals("Flux Liner")) {
         	Jet jet = new FluxLiner(name, speed, range, price);
         	return jet;
         }
-        
-        return null;
+        else	//returns null if none of the file contents match pre-declared objects
+        	return null;
 	}
 	
+	//Displays menu
 	private void menu(List<Jet> jets) {
 		int input;
 		boolean looping = true;
+		Scanner kb = new Scanner(System.in);
 		
 		while(looping) {
+			System.out.println("+-----------------------------------+");
+			System.out.println("|               MENU:               |");
+			System.out.println("+-----------------------------------+");
+			System.out.println("| 1) List Fleet                     |");
+			System.out.println("| 2) Fly All Jets                   |");
+			System.out.println("| 3) View Fastest Jet               |");
+			System.out.println("| 4) View Jet with Longest Range    |");
+			System.out.println("| 5) Load all Cargo Jets            |");
+			System.out.println("| 6) Execute Experimental Function  |");
+			System.out.println("| 7) Add a jet to Fleet             |");
+			System.out.println("| 8) Remove a jet from Fleet        |");
+			System.out.println("| 9) Quit                           |");
+			System.out.println("+-----------------------------------+");
 			
-			System.out.println("MENU:");
-			System.out.println("1. List Fleet");
-			System.out.println("2. Fly All Jets");
-			System.out.println("3. View Fastest Jet");
-			System.out.println("4. View Jet with Longest Range");
-			System.out.println("5. Load all Cargo Jets");
-			System.out.println("6. Execute Experimental Functions");
-			System.out.println("7. Add a jet to Fleet");
-			System.out.println("8. Remove a jet from Fleet");
-			System.out.println("9. Quit");
-			
-			System.out.print("Select an option on the menu: ");
-			
-			Scanner kb = new Scanner(System.in);
+			System.out.print("|-> Select an option on the menu: ");
 			input = kb.nextInt();
 			
+			//Calls relevant method for menu selection
 			switch(input) {
 				case 1:
 					listFleet(jets);
@@ -145,39 +158,47 @@ public class JetApplication {
 					System.out.println("Program Ended.");
 					looping = false;
 					break;
-					
-					
 			}
 		}
+		kb.close();
 	}
 	
+	//Prints all jets stored in fleet
 	public void listFleet(List<Jet> jets) {
 		for(int i=0; i<jets.size(); i++) {
 			System.out.println(jets.get(i).toString());
 		}
 	}
 	
+	//Prints all jet info as well as travel time
 	public void flyAllJets(List<Jet> jets) {
 		for(int i=0; i<jets.size(); i++) {
 			jets.get(i).fly();
 		}
 	}
+	
+	//Prints out fastest jet
 	public void viewFastestJet(List<Jet> jets) {
 		Jet highestJet = jets.get(0);
-		for(int i=0; i<jets.size(); i++) {
-			if(jets.get(i).getSpeed() > highestJet.getSpeed()) {
-				highestJet = jets.get(i);
+		for(Jet jet : jets) {
+			if(jet.getSpeed() > highestJet.getSpeed()) {
+				highestJet = jet;
 			}
 		}
 		System.out.println(highestJet.toString());
 	}
+	
+	//Prints out jet with longest range
 	public void viewLongestRange(List<Jet> jets) {
 		Jet longestJet = jets.get(0);
-		for(int i=0; i<jets.size(); i++) {
-			if(jets.get(i).getSpeed() > longestJet.getSpeed()) {
-				longestJet = jets.get(i);
+		for(Jet jet : jets) {
+			if(jet.getRange() > longestJet.getRange())
+			{
+				longestJet = jet;
 			}
 		}
+		System.out.println("\nJet With Longest Range:");
+		System.out.println("------------------------");
 		System.out.println(longestJet.toString());
 	}
 	public void loadAllCargoJets(List<Jet> jets) {
@@ -203,7 +224,7 @@ public class JetApplication {
 		System.out.println("Enter name of jet: ");
 		kb.nextLine();
 		String name = kb.nextLine();
-		System.out.println("Enter speed: ");
+		System.out.println("Enter speed (in MPH): ");
 		int speed = kb.nextInt();
 		System.out.println("Enter range: ");
 		double range = kb.nextDouble();

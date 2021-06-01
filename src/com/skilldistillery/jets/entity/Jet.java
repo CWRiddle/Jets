@@ -41,7 +41,7 @@ public abstract class Jet {
 	@Override
 	public String toString()
 	{
-		return ("Jet ID: " + jetId + "\n\tModel: " + this.model + "\n\tSpeed: " + this.speed + "\n\tRange: " + this.range + "\n\tPrice: " + price);
+		return ("Jet ID: " + jetId + "\n\tModel: " + this.model + "\n\tSpeed: " + this.speed + " mph\n\tMach: mach " + getSpeedInMach() + "\n\tRange: " + this.range + " miles\n\tPrice: $" + price);
 	}
 	
 	//Getters and Setters
